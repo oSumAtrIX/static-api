@@ -50,7 +50,7 @@ class ReleaseApi(Api):
 			# At last join the current tag to an index file
 			index_path = join(path, f'{repository_name}.json')
 			
-			index = read_json(index_path)
+			index = read_json(index_path, [])
 			if tag not in index: # TODO: Check if there a better way to do this
 				index.append(tag) # Add the current tag to the index
 
