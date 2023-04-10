@@ -1,0 +1,58 @@
+name: Update static API
+
+on:
+  repository_dispatch:
+
+jobs:
+  update:
+    name: Update static API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.10
+
+      - name: Create configuration file
+        run: echo "${{ vars.CONFIG }}" > config.json
+
+      - name: Check for existing deployment exists
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            echo "::set-output name=deployment-exists::true"
+          else
+            echo "::set-output name=deployment-exists::false"
+          fi
+        id: check_deployment
+
+      - name: Restore deployment if it exists
+        if: steps.check_deployment.outputs.deployment-exists == 'true'
+        run: |
+          git config user.name revanced-bot
+          git config user.email github@revanced.app
+          git subtree add --prefix=static/ origin/gh-pages --squash
+
+      - name: Update static API
+        run: |
+          pip install requests
+          python src/main.py
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "chore: updated static files"
+          fetch: false
+          push: false
+
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: gh-pages
+          FOLDER: static
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

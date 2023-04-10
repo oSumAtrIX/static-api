@@ -1,0 +1,17 @@
+{
+	"api": [
+		{
+			"type": "release+contributor",
+			"repositories": [
+				"user/repo"
+			]
+		},
+		{
+			"type": "social",
+			"socials": {
+				"website": "https://yourwebsite.com"
+			}
+		}
+	],
+	"output": "static"
+}
