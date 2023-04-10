@@ -2,6 +2,7 @@ name: Update static API
 
 on:
   repository_dispatch:
+  workflow_dispatch:
 
 jobs:
   update:
