@@ -8,7 +8,7 @@ def write_json(text: str | dict | list, to, overwrite=True):
 				text = json.dumps(text)
 			f.write(text)
 
-def read_json(path, default=[]):
+def read_json(path, default):
 	if os.path.exists(path):
 		with open(path, 'r') as f:
 			return json.load(f)

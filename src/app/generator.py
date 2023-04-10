@@ -10,7 +10,6 @@ class Api():
 	def __init__(self, name: str, api: api.Api = api.GitHubApi()) -> None:
 		self.name = name
 		self._api = api
-		pass
 
 	@abstractmethod
 	def generate(self, config, path):
@@ -50,12 +49,11 @@ class ReleaseApi(Api):
 			# At last join the current tag to an index file
 			index_path = join(path, f'{repository_name}.json')
 			
-			index = read_json(index_path)
+			index = read_json(index_path, [])
 			if tag not in index: # TODO: Check if there a better way to do this
 				index.append(tag) # Add the current tag to the index
 
 			write_json(index, index_path)
-		pass
 
 class ContributorApi(Api):
 	def __init__(self, api) -> None:
@@ -75,12 +73,10 @@ class ContributorApi(Api):
 			contributors_path = join(path, f'{repository_name}.json')
 
 			write_json(contributors, contributors_path)
-		pass
 
 class SocialApi(Api):
 	def __init__(self, api) -> None:
 		super().__init__("social", api)
-		pass
 	
 	def generate(self, config, path):
 		new_social = config
@@ -89,14 +85,12 @@ class SocialApi(Api):
 		social = read_json(social_path, new_social)
 
 		write_json(social, social_path)
-		pass
 
 class ApiProvider():
 	_apis: list[Api]
 
 	def __init__(self, apis: list[Api]) -> None:
 		self._apis = apis
-		pass
 
 	def get(self, name: str) -> Api:
 		for api in self._apis:
@@ -114,4 +108,3 @@ class DefaultApiProvider(ApiProvider):
 			ContributorApi(self._api), 
 			SocialApi(self._api)]
 		)
-		pass
