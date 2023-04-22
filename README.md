@@ -2,6 +2,10 @@
 
 Proof of concept repository to host a static API using GitHub workflows.
 
+## Archived
+
+This repository has moved to [ReVanced](https://github.com/revanced).
+
 ## How it works
 
 On CI trigger static files are generated and commited to the `gh-pages` branch.
